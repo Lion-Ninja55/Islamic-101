@@ -283,15 +283,6 @@ export default function HomePage() {
                 })}
               </div>
             )}
-
-            {dateInfo && (
-              <div className="mt-6 text-center">
-                <p className="text-lg font-medium">
-                  {dateInfo.hijri.day} {dateInfo.hijri.month.en} {dateInfo.hijri.year}
-                </p>
-                <p className="text-sm text-muted-foreground">{dateInfo.hijri.month.ar}</p>
-              </div>
-            )}
           </div>
         </section>
       </main>

@@ -42,13 +42,87 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
   const [isBookmarked, setIsBookmarked] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    fetchAyahs()
-    const timer = setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'auto' })
-    }, 100)
-    return () => clearTimeout(timer)
+    const abortController = new AbortController()
+    let isMounted = true
+
+    const loadAyahs = async () => {
+      setIsLoading(true)
+      try {
+        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/ar.alafasy`, {
+          signal: abortController.signal,
+        })
+        const data = await response.json()
+
+        const transResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.sahih`, {
+          signal: abortController.signal,
+        })
+        const transData = await transResponse.json()
+
+        if (!isMounted) return
+
+        if (data.data && data.data.ayahs) {
+          const bismillah = data.data.bismillah || ''
+          setApiBismillah(bismillah)
+
+          const verses: Ayah[] = []
+          const transObj: Record<number, string> = {}
+
+          data.data.ayahs.forEach((v: any, idx: number) => {
+            let text = (v.text || '').trim()
+            const verseNum = v.numberInSurah || idx + 1
+
+            if (idx === 0 && surahNumber !== 9 && bismillah) {
+              const cleaned = text.replace(/^[\u200B-\u200D\uFEFF]+/, '')
+              if (cleaned.startsWith(bismillah)) {
+                text = cleaned.slice(bismillah.length).trim()
+              }
+            }
+
+            verses.push({
+              id: `${surahNumber}-${verseNum}`,
+              verse_number: verseNum,
+              text_arabic: text,
+            })
+          })
+
+          setAyahs(verses)
+
+          if (transData.data?.ayahs) {
+            const bismillahTrans = transData.data.bismillah || ''
+            setApiBismillahTrans(bismillahTrans)
+            transData.data.ayahs.forEach((v: any) => {
+              let trans = v.text
+              if (trans && v.numberInSurah === 1 && surahNumber !== 9 && bismillahTrans) {
+                const cleanedTrans = trans.replace(/^[\u200B-\u200D\uFEFF]+/, '')
+                const bismillahIndex = cleanedTrans.toLowerCase().indexOf(bismillahTrans.toLowerCase())
+                if (bismillahIndex !== -1) {
+                  trans = cleanedTrans.slice(bismillahIndex + bismillahTrans.length).trim()
+                }
+              }
+              if (trans) {
+                transObj[v.numberInSurah] = trans
+              }
+            })
+          }
+
+          setTranslationText(transObj)
+        }
+      } catch (err) {
+        if (!isMounted) return
+        if (abortController.signal.aborted) return
+        console.error('Failed to fetch:', err)
+        setError('Failed to load surah')
+      } finally {
+        if (isMounted) setIsLoading(false)
+      }
+    }
+
+    loadAyahs()
+
+    return () => {
+      isMounted = false
+      abortController.abort()
+    }
   }, [surahNumber])
 
   useEffect(() => {
@@ -70,73 +144,6 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
     }
     localStorage.setItem('quran-bookmarks', JSON.stringify(newBookmarks))
     setIsBookmarked(!isBookmarked)
-  }
-
-  const fetchAyahs = async () => {
-    setIsLoading(true)
-    setError(null)
-    try {
-      const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/ar.alafasy`)
-      const data = await response.json()
-      
-      const transResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.sahih`)
-      const transData = await transResponse.json()
-      
-      if (data.data && data.data.ayahs) {
-        const bismillah = data.data.bismillah || ''
-        setApiBismillah(bismillah)
-
-        const verses: Ayah[] = []
-        const transObj: Record<number, string> = {}
-
-        data.data.ayahs.forEach((v: any, idx: number) => {
-          let text = (v.text || '').trim()
-          const verseNum = v.numberInSurah || idx + 1
-
-          if (idx === 0 && surahNumber !== 9 && bismillah) {
-            // Remove any zero-width characters from the start that might precede Bismillah
-            const cleaned = text.replace(/^[\u200B-\u200D\uFEFF]+/, '')
-            if (cleaned.startsWith(bismillah)) {
-              text = cleaned.slice(bismillah.length).trim()
-            }
-          }
-
-          verses.push({
-            id: `${surahNumber}-${verseNum}`,
-            verse_number: verseNum,
-            text_arabic: text,
-          })
-        })
-        
-        setAyahs(verses)
-        
-        if (transData.data?.ayahs) {
-          const apiBismillahTrans = transData.data?.bismillah || ''
-          setApiBismillahTrans(apiBismillahTrans)
-          transData.data.ayahs.forEach((v: any) => {
-            let trans = v.text
-            if (trans && v.numberInSurah === 1 && surahNumber !== 9 && apiBismillahTrans) {
-              // Remove any zero-width characters from start
-              const cleanedTrans = trans.replace(/^[\u200B-\u200D\uFEFF]+/, '')
-              const bismillahIndex = cleanedTrans.toLowerCase().indexOf(apiBismillahTrans.toLowerCase())
-              if (bismillahIndex !== -1) {
-                trans = cleanedTrans.slice(bismillahIndex + apiBismillahTrans.length).trim()
-              }
-            }
-            if (trans) {
-              transObj[v.numberInSurah] = trans
-            }
-          })
-        }
-        
-        setTranslationText(transObj)
-      }
-    } catch (err) {
-      console.error('Failed to fetch:', err)
-      setError('Failed to load surah')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   const handleGotoAyah = (newSurahNumber: number) => {
