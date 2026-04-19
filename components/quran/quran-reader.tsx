@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Bookmark, BookmarkCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useSettings } from '@/context/settings-context'
@@ -39,18 +39,38 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
   const { settings, updateSettings } = useSettings()
   const [surahSearch, setSurahSearch] = useState('')
   const [showSurahDropdown, setShowSurahDropdown] = useState(false)
+  const [isBookmarked, setIsBookmarked] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     fetchAyahs()
     const timer = setTimeout(() => {
-      window.scrollTo(0, 0)
-    }, 0)
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    }, 100)
     return () => clearTimeout(timer)
   }, [surahNumber])
 
   useEffect(() => {
     setShowTranslation(settings.showTranslation)
   }, [settings.showTranslation])
+
+  useEffect(() => {
+    const bookmarks = JSON.parse(localStorage.getItem('quran-bookmarks') || '[]')
+    setIsBookmarked(bookmarks.includes(surahNumber))
+  }, [surahNumber])
+
+  const toggleBookmark = () => {
+    const bookmarks = JSON.parse(localStorage.getItem('quran-bookmarks') || '[]')
+    let newBookmarks
+    if (isBookmarked) {
+      newBookmarks = bookmarks.filter((b: number) => b !== surahNumber)
+    } else {
+      newBookmarks = [...bookmarks, surahNumber]
+    }
+    localStorage.setItem('quran-bookmarks', JSON.stringify(newBookmarks))
+    setIsBookmarked(!isBookmarked)
+  }
 
   const fetchAyahs = async () => {
     setIsLoading(true)
@@ -131,16 +151,35 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
   return (
     <div className="min-h-screen">
       <div className="sticky top-0 bg-background/95 backdrop-blur z-10 border-b px-4 py-3">
-        <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <Button variant="ghost" size="icon" onClick={onBack}>
             <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => surahNumber > 1 && handleGotoAyah(surahNumber - 1)}
+            disabled={surahNumber <= 1}
+            title="Previous Surah"
+          >
+            <ChevronLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1 min-w-[200px]">
             <h2 className="font-semibold">{surahInfo?.englishName}</h2>
             <p className="text-sm text-muted-foreground">
-              {surahInfo?.numberOfAyahs} Ayahs
+              Surah {surahNumber} of 114 • {surahInfo?.numberOfAyahs} Ayahs
             </p>
           </div>
+          
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => surahNumber < 114 && handleGotoAyah(surahNumber + 1)}
+            disabled={surahNumber >= 114}
+            title="Next Surah"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
           
           <div className="relative">
             <Input
@@ -183,6 +222,19 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
             }}
           >
             {showTranslation ? 'Hide' : 'Show'} Translation
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={toggleBookmark}
+            title={isBookmarked ? 'Remove Bookmark' : 'Add Bookmark'}
+          >
+            {isBookmarked ? (
+              <BookmarkCheck className="h-5 w-5 text-primary" />
+            ) : (
+              <Bookmark className="h-5 w-5" />
+            )}
           </Button>
         </div>
       </div>

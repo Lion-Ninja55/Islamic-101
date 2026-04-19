@@ -1,17 +1,34 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import type { Surah } from '@/app/quran/page'
+import { BookmarkCheck } from 'lucide-react'
 
 interface SurahListProps {
   surahs: Surah[]
   isLoading: boolean
   onSelect: (surahNumber: number) => void
+  showBookmarksOnly?: boolean
+  searchQuery?: string
 }
 
-export function SurahList({ surahs, isLoading, onSelect }: SurahListProps) {
+export function SurahList({ surahs, isLoading, onSelect, showBookmarksOnly = false, searchQuery = '' }: SurahListProps) {
+  const [bookmarks, setBookmarks] = useState<number[]>([])
+
+  useEffect(() => {
+    const saved = localStorage.getItem('quran-bookmarks')
+    if (saved) {
+      setBookmarks(JSON.parse(saved))
+    }
+  }, [])
+
+  const displayedSurahs = showBookmarksOnly 
+    ? surahs.filter(s => bookmarks.includes(s.number))
+    : surahs
+
   if (isLoading) {
     return (
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -31,6 +48,15 @@ export function SurahList({ surahs, isLoading, onSelect }: SurahListProps) {
     )
   }
 
+  if (displayedSurahs.length === 0 && searchQuery) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-lg text-muted-foreground mb-2">No results found.</p>
+        <p className="text-sm text-muted-foreground">Check your spelling or try a different number.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
       {surahs.map((surah) => (
@@ -40,8 +66,13 @@ export function SurahList({ surahs, isLoading, onSelect }: SurahListProps) {
           onClick={() => onSelect(surah.number)}
         >
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold relative">
               {surah.number}
+              {bookmarks.includes(surah.number) && (
+                <div className="absolute -top-1 -right-1 h-4 w-4 bg-primary rounded-full flex items-center justify-center">
+                  <BookmarkCheck className="h-2.5 w-2.5 text-primary-foreground" />
+                </div>
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">

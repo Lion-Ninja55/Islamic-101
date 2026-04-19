@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect, useMemo, Suspense } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { SurahList } from '@/components/quran/surah-list'
 import QuranReader from '@/components/quran/quran-reader'
 import { QuranFacts } from '@/components/quran/quran-facts'
 import { Input } from '@/components/ui/input'
-import { Search, BookOpen } from 'lucide-react'
+import { Search, Loader2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { useSettings } from '@/context/settings-context'
 
@@ -24,9 +24,10 @@ export interface Surah {
   bismillah_pre?: boolean
 }
 
-export default function QuranPage() {
+function QuranPageContent() {
   const { settings, updateSettings } = useSettings()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [surahs, setSurahs] = useState<Surah[]>([])
   const [selectedSurah, setSelectedSurah] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -143,6 +144,7 @@ export default function QuranPage() {
               surahs={filteredSurahs} 
               isLoading={isLoading}
               onSelect={handleSurahSelect}
+              searchQuery={searchQuery}
             />
             
             <QuranFacts />
@@ -162,5 +164,32 @@ export default function QuranPage() {
         )}
       </main>
     </div>
+  )
+}
+
+function QuranLoadingFallback() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navigation />
+      <main className="flex-1 container px-4 py-6">
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-64 bg-muted rounded animate-pulse" />
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="h-20 bg-muted rounded-lg animate-pulse" />
+          ))}
+        </div>
+      </main>
+    </div>
+  )
+}
+
+export default function QuranPage() {
+  return (
+    <Suspense fallback={<QuranLoadingFallback />}>
+      <QuranPageContent />
+    </Suspense>
   )
 }

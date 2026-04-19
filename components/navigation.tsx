@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { useTheme } from 'next-themes'
 import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Home, Book, Settings, Moon, Sun, Menu } from 'lucide-react'
+import { Home, Book, Settings, Menu } from 'lucide-react'
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home },
@@ -17,7 +16,6 @@ const navItems = [
 
 export function Navigation() {
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
 
   return (

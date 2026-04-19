@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select'
 import { useSettings } from '@/context/settings-context'
 import { useTheme } from 'next-themes'
-import { Moon, Sun, Monitor, RotateCcw, Palette } from 'lucide-react'
+import { Moon, Sun, Monitor, RotateCcw, Calendar } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -168,7 +168,10 @@ export function GeneralSettings() {
               {availableAccents.map((accent) => (
                 <button
                   key={accent.value}
-                  onClick={() => updateSettings({ accentColor: accent.value })}
+                  onClick={() => {
+                    console.log('Accent color clicked:', accent.value)
+                    updateSettings({ accentColor: accent.value })
+                  }}
                   className={`h-10 w-10 rounded-full ${accent.color} transition-transform hover:scale-110 ${
                     settings.accentColor === accent.value 
                       ? 'ring-2 ring-offset-2 ring-primary scale-110' 
@@ -291,6 +294,70 @@ export function GeneralSettings() {
             />
             <p className="text-sm text-muted-foreground">
               Adjust if the Hijri date shown differs from your local moon sighting
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Date Format */}
+      <Card className="overflow-hidden border-accent/20">
+        <CardHeader className="bg-gradient-to-r from-accent/10 to-transparent border-b border-accent/10">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-accent/20 flex items-center justify-center">
+              <Calendar className="h-4 w-4 text-accent-foreground" />
+            </div>
+            <div>
+              <CardTitle>Date Format</CardTitle>
+              <CardDescription>
+                Choose how dates are displayed throughout the app
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-3">
+            <Label>Date Format</Label>
+            <Select
+              value={settings.dateFormat}
+              onValueChange={(value) => updateSettings({ dateFormat: value })}
+            >
+              <SelectTrigger className="w-full max-w-xs">
+                <SelectValue placeholder="Select date format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dd_MM_yyyy">DD/MM/YYYY (18/04/2026)</SelectItem>
+                <SelectItem value="MM_dd_yyyy">MM/DD/YYYY (04/18/2026)</SelectItem>
+                <SelectItem value="yyyy_MM_dd">YYYY-MM-DD (2026-04-18)</SelectItem>
+                <SelectItem value="dd_MMMM_yyyy">18 April 2026</SelectItem>
+                <SelectItem value="MMMM_dd_yyyy">April 18, 2026</SelectItem>
+                <SelectItem value="d_MMMM_yyyy">18th April 2026</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-3">
+            <Label>Date Language</Label>
+            <Select
+              value={settings.dateLanguage}
+              onValueChange={(value) => updateSettings({ dateLanguage: value })}
+            >
+              <SelectTrigger className="w-full max-w-xs">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="ar">العربية (Arabic)</SelectItem>
+                <SelectItem value="ur">اردو (Urdu)</SelectItem>
+                <SelectItem value="bn">বাংলা (Bengali)</SelectItem>
+                <SelectItem value="id">Bahasa Indonesia</SelectItem>
+                <SelectItem value="tr">Türkçe (Turkish)</SelectItem>
+                <SelectItem value="fr">Français (French)</SelectItem>
+                <SelectItem value="de">Deutsch (German)</SelectItem>
+                <SelectItem value="es">Español (Spanish)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Language used for displaying the modern (Gregorian) date
             </p>
           </div>
         </CardContent>
