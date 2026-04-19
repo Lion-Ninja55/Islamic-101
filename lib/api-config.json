@@ -1,0 +1,46 @@
+{
+  "quran": {
+    "name": "AlQuran Cloud API",
+    "description": "Free, unlimited, and accurate Quran API - no API key required",
+    "baseUrl": "https://api.alquran.cloud/v1",
+    "endpoints": {
+      "surahList": "/surah",
+      "surah": "/surah/{surahNumber}/{edition}",
+      "ayah": "/ayah/{reference}/{edition}",
+      "quran": "/quran/{edition}",
+      "juz": "/juz/{juzNumber}/{edition}",
+      "meta": "/meta"
+    },
+    "editions": {
+      "arabic": "ar.alafasy",
+      "translation": "en.sahih"
+    },
+    "audio": {
+      "baseUrl": "https://cdn.islamic.network/quran/audio",
+      "reciters": {
+        "alafasy": "ar.alafasy",
+        "husary": "ar.husary",
+        "minshawi": "ar.minshawi",
+        "shatri": "ar.shatri"
+      }
+    }
+  },
+  "prayerTimes": {
+    "name": "AlAdhan Prayer Times API",
+    "description": "Free prayer times API - no API key required",
+    "baseUrl": "https://api.aladhan.com/v1",
+    "endpoints": {
+      "timings": "/timings/{date}",
+      "calendar": "/calendar/{year}/{month}",
+      "nextPrayer": "/timings/{date}/next"
+    }
+  },
+  "geolocation": {
+    "name": "BigDataCloud",
+    "description": "Free geolocation API - no API key required",
+    "baseUrl": "https://api.bigdatacloud.net/data",
+    "endpoints": {
+      "reverseGeocode": "/reverse-geocode-client"
+    }
+  }
+}
