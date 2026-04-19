@@ -28,7 +28,9 @@
 
 ### 🕋 Prayer Times (Home Page)
 
+- **Modern and Hijri date display** at the top of the page
 - **Real-time countdown** to the next prayer (updates every second)
+- **Fixed location display** showing "Current Location ✓"
 - **Automatic location detection** via browser geolocation + reverse geocoding
 - **Manual location entry** with latitude/longitude or city search
 - **15 calculation methods** supporting different Islamic organizations worldwide:
@@ -48,11 +50,13 @@
 ### 📖 Quran Reader
 
 - **Browse all 114 surahs** with Arabic names, English translations, and revelation types
-- **Search surahs** by name (English/Arabic) or number
+- **Search surahs** by name (English/Arabic) or number with "No results found" feedback
+- **Bookmark surahs** - save your favorite surahs for quick access
+- **Prev/Next navigation** - easily navigate between surahs
 - **Read in Arabic** using the Mishary Rashid Alafasy recitation text
-- **View translations** in 19 languages:
-  - English (Sahih International, Yusuf Ali, Pickthall, Asad, Shakir, Hilali & Khan)
-  - Urdu, Bengali, Indonesian, Turkish, French, German, Spanish, Russian, Italian, Dutch
+- **View translations** in 28+ languages:
+  - English (Sahih International, Yusuf Ali, Pickthall, Asad, Shakir, Hilali & Khan, Arberry, Daryabadi, etc.)
+  - Urdu, Bengali, Indonesian, Turkish, French, German, Spanish, Russian, Italian, Dutch, Persian, Chinese, Japanese, Malayalam, Swahili, Amharic
 - **Adjustable Arabic font size** (18–48px) with live preview
 - **Toggle translation** on/off with one click
 - **Bismillah** displayed separately before each surah (except Surah At-Tawbah)
@@ -76,18 +80,21 @@ All settings are **persisted to localStorage** and sync across app restarts.
 
 **General:**
 - Theme selection (Light/Dark/System)
-- Accent color picker
+- Accent color picker with dark mode variants
 - Interface language (8 options)
 - Time format (12h/24h)
 - Hijri date adjustment (±2 days)
+- **Date format** - choose how dates are displayed (DD/MM/YYYY, MM/DD/YYYY, etc.)
+- **Date language** - display dates in English, Arabic, Urdu, Bengali, Indonesian, Turkish, French, German, or Spanish
 - Reset all settings
 
 **Quran:**
 - Arabic font size slider with live preview
 - Line spacing control (8–20 lines)
-- Translation language selector (19 languages)
+- Translation language selector (28+ languages)
 - Toggle translation on/off
 - Toggle transliteration (UI ready, data pending)
+- **Ayah numbering language** - choose between English (1,2,3), Arabic (١,٢,٣), or Urdu (۱,۲,۳)
 - Quran theme selector (classic/modern/sepia — ready for future use)
 
 **Salah (Prayer):**
@@ -99,6 +106,11 @@ All settings are **persisted to localStorage** and sync across app restarts.
 - Notification configuration:
   - Per-prayer enable/disable
   - Before-Adhan reminder (0–60 min)
+
+**Location:**
+- Automatic detection
+- Manual coordinate entry
+- City and country display
 
 ---
 
@@ -181,15 +193,13 @@ Nur+ uses **OKLCH color space** for perceptually uniform, accessible colors. The
 ### Home Page (`/`)
 
 **What you'll see:**
-1. **Bismillah header** — Beautiful Arabic calligraphy with English translation
-2. **Prayer times section**:
+1. **Date bar** — Modern date (in selected language) and Hijri date displayed together at the top
+2. **Bismillah header** — Beautiful Arabic calligraphy with English translation
+3. **Prayer times section**:
    - Next prayer card with live countdown
    - Grid of all 6 prayer times (Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha)
    - Hijri date with Arabic month name
    - "Update Location" button for manual refresh
-3. **Quick actions**:
-   - "Read Quran" → opens Quran page
-   - "Settings" → opens settings hub
 4. **Footer** with Islamic greeting
 
 **How it works:**
@@ -235,7 +245,7 @@ Nur+ uses **OKLCH color space** for perceptually uniform, accessible colors. The
 
 ### Settings Page (`/settings`)
 
-**Three tabs:**
+**Four tabs:**
 
 #### 🔹 General
 - Theme picker (Light/Dark/System)
@@ -243,15 +253,23 @@ Nur+ uses **OKLCH color space** for perceptually uniform, accessible colors. The
 - Interface language (8 options)
 - Time format (12h/24h)
 - Hijri date offset (±2 days)
+- Date format (6 options)
+- Date language (9 options)
 - Reset all settings button
+
+#### 📍 Location
+- Current location display
+- Automatic detection button
+- Manual entry for coordinates
+- Common city coordinates reference
 
 #### 📖 Quran
 - Font size slider (18–48px) — live Bismillah preview
 - Line spacing slider (8–20)
-- Translation language dropdown (19 options)
+- Translation language dropdown (28+ options)
 - Toggle translation (on by default)
 - Toggle transliteration (UI ready, data pending)
-- Quran theme selector (inactive, reserved)
+- Ayah numbering language (English/Arabic/Urdu)
 - Quran statistics card
 
 #### 🕋 Salah
@@ -277,11 +295,13 @@ accentColor: 'green' | 'gold' | 'blue' | 'cyan' | 'red' | 'purple' | 'orange'
 
 // Quran
 quranFontSize: 18–48 (default: 28)
-quranTranslation: 'en.sahih' | 'en.asad' | 'en.pickthall' | ... (19 total)
+quranTranslation: 'en.sahih' | 'en.asad' | 'en.pickthall' | ... (28+ total)
+quranReciter: string (default: 'ar.alafasy')
 showTranslation: boolean (default: true)
 showTransliteration: boolean (default: false)
 quranTheme: 'classic' | 'modern' | 'sepia' (default: 'classic')
 linesPerPage: 8–20 (default: 16)
+ayahNumbering: 'english' | 'arabic' | 'urdu' (default: 'english')
 
 // Salah
 calculationMethod: '0'–'15' (default: '2' = ISNA)
@@ -322,6 +342,8 @@ location: {
 language: 'en' | 'ar' | 'ur' | 'bn' | 'id' | 'tr' | 'fr' | 'ms' (default: 'en')
 hijriAdjustment: -2 | -1 | 0 | 1 | 2 (default: 0)
 timeFormat: '12h' | '24h' (default: '12h')
+dateFormat: string (default: 'dd_MM_yyyy')
+dateLanguage: string (default: 'en')
 ```
 
 ### Prayer Calculation Methods
@@ -492,10 +514,13 @@ Islamic-101/
 
 ## ⚠️ Known Issues & Limitations
 
-### Bugs
-- **Translation language setting not respected:** The Quran reader always fetches English (`en.sahih`) regardless of the selected translation in settings. The dropdown changes the setting but the API call is hardcoded. Needs fix in `quran-reader.tsx` line 59.
-- **Location settings component orphaned:** `components/settings/location-settings.tsx` exists but is never used. Location handling is done inline in `page.tsx` and `salah-settings.tsx`.
-- **Missing `/salah` page:** Build artifacts show `/salah` route, but the source file is missing from `app/salah/page.tsx`.
+### Fixed
+- **Accent color in dark mode** — Now properly applies across all themes ✅
+- **Quran search "No results found"** — Now displays helpful message when no results ✅
+- **useSearchParams Suspense** — Wrapped in Suspense boundary ✅
+- **Location settings tab** — Now accessible in Settings page ✅
+- **Theme toggle** — Simplified, no longer necessary in navigation ✅
+- **Quick Actions** — Removed from home page ✅
 
 ### Incomplete Features
 - **Transliteration**: Setting exists (`showTransliteration`) but no data is fetched or displayed
@@ -504,6 +529,7 @@ Islamic-101/
 - **Push notifications**: Notification settings are config-only; actual push notifications not implemented (requires service worker, VAPID keys)
 - **UI localization**: Language setting exists but UI text is only English (no translations)
 - **Audio**: API provides audio CDN URLs, but no player built
+- **Ayah numbering language**: Setting added but not yet implemented in the reader display
 
 ### Performance
 - No image optimization (no images in use)
