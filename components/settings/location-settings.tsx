@@ -168,7 +168,7 @@ export function LocationSettings() {
             <div>
               <CardTitle>Automatic Detection</CardTitle>
               <CardDescription>
-                Use your browser&apos;s location services to detect your position
+                Use your browser's location services to detect your position
               </CardDescription>
             </div>
           </div>

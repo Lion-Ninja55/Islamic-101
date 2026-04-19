@@ -63,14 +63,14 @@ const darkModeAccentColors = [
 
 export function GeneralSettings() {
   const { settings, updateSettings, resetSettings } = useSettings()
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
-  const isDark = theme === 'dark'
+  const isDark = resolvedTheme === 'dark'
   const availableAccents = isDark ? darkModeAccentColors : accentColors
 
   if (!mounted) {
@@ -169,7 +169,6 @@ export function GeneralSettings() {
                 <button
                   key={accent.value}
                   onClick={() => {
-                    console.log('Accent color clicked:', accent.value)
                     updateSettings({ accentColor: accent.value })
                   }}
                   className={`h-10 w-10 rounded-full ${accent.color} transition-transform hover:scale-110 ${

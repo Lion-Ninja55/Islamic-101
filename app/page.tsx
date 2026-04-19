@@ -46,13 +46,13 @@ export default function HomePage() {
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string; remaining: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (settings.location.latitude && settings.location.longitude) {
-      fetchPrayerTimes()
-    } else {
-      requestLocation()
-    }
-  }, [settings.location.latitude, settings.location.longitude, settings.calculationMethod, settings.asrJuristic])
+   useEffect(() => {
+     if (settings.location.latitude && settings.location.longitude) {
+       fetchPrayerTimes()
+     } else {
+       requestLocation()
+     }
+   }, [settings.location.latitude, settings.location.longitude, settings.calculationMethod, settings.asrJuristic, settings.hijriAdjustment])
 
   useEffect(() => {
     if (prayerTimes) {

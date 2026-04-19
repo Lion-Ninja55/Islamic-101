@@ -25,7 +25,7 @@ export default function SettingsPage() {
               </div>
               <h1 className="text-3xl font-bold">Settings</h1>
             </div>
-            <p className="text-muted-foreground ml-13">
+            <p className="text-muted-foreground ml-[3.25rem]">
               Customize your Nur+ experience
             </p>
           </div>

@@ -83,23 +83,24 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
       const transData = await transResponse.json()
       
       if (data.data && data.data.ayahs) {
-        setApiBismillah(data.data.bismillah || '')
-        
+        const bismillah = data.data.bismillah || ''
+        setApiBismillah(bismillah)
+
         const verses: Ayah[] = []
         const transObj: Record<number, string> = {}
-        
+
         data.data.ayahs.forEach((v: any, idx: number) => {
           let text = (v.text || '').trim()
           const verseNum = v.numberInSurah || idx + 1
-          
-          if (idx === 0 && surahNumber !== 9 && apiBismillah) {
+
+          if (idx === 0 && surahNumber !== 9 && bismillah) {
             // Remove any zero-width characters from the start that might precede Bismillah
             const cleaned = text.replace(/^[\u200B-\u200D\uFEFF]+/, '')
-            if (cleaned.startsWith(apiBismillah)) {
-              text = cleaned.slice(apiBismillah.length).trim()
+            if (cleaned.startsWith(bismillah)) {
+              text = cleaned.slice(bismillah.length).trim()
             }
           }
-          
+
           verses.push({
             id: `${surahNumber}-${verseNum}`,
             verse_number: verseNum,
