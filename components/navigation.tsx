@@ -4,9 +4,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { useTheme } from 'next-themes'
 import { useState } from 'react'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { Home, Book, Settings, Menu } from 'lucide-react'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Home, Book, Settings, Moon, Sun, Menu } from 'lucide-react'
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home },
@@ -16,6 +17,7 @@ const navItems = [
 
 export function Navigation() {
   const pathname = usePathname()
+  const { theme, setTheme } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -60,9 +62,6 @@ export function Navigation() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px]">
-              <SheetHeader className="sr-only">
-                <SheetTitle>Navigation Menu</SheetTitle>
-              </SheetHeader>
               <nav className="flex flex-col gap-2 mt-8">
                 {navItems.map((item) => {
                   const Icon = item.icon

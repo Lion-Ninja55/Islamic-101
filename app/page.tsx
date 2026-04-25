@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Settings, MapPin, RefreshCw, Clock, Calendar } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Book, Settings, MapPin, RefreshCw, Clock } from 'lucide-react'
 import { useSettings } from '@/context/settings-context'
 import { useState, useEffect } from 'react'
 
@@ -46,13 +46,13 @@ export default function HomePage() {
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string; remaining: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-   useEffect(() => {
-     if (settings.location.latitude && settings.location.longitude) {
-       fetchPrayerTimes()
-     } else {
-       requestLocation()
-     }
-   }, [settings.location.latitude, settings.location.longitude, settings.calculationMethod, settings.asrJuristic, settings.hijriAdjustment])
+  useEffect(() => {
+    if (settings.location.latitude && settings.location.longitude) {
+      fetchPrayerTimes()
+    } else {
+      requestLocation()
+    }
+  }, [settings.location.latitude, settings.location.longitude, settings.calculationMethod, settings.asrJuristic])
 
   useEffect(() => {
     if (prayerTimes) {
@@ -155,32 +155,11 @@ export default function HomePage() {
     return `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`
   }
 
-  const today = new Date()
-  const formattedDate = today.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
       <main className="flex-1">
-        <section className="py-6 bg-secondary/20 border-b border-border/50">
-          <div className="container px-4">
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-primary" />
-                <span className="text-lg font-medium">{formattedDate}</span>
-              </div>
-              <div className="hidden md:block w-px h-6 bg-border" />
-              {dateInfo && (
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold text-primary" dir="rtl">
-                    {dateInfo.hijri.day} {dateInfo.hijri.month.ar} {dateInfo.hijri.year}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
+        {/* Bismillah Section */}
         <section className="py-12 md:py-16">
           <div className="container px-4">
             <div className="max-w-2xl mx-auto text-center">
@@ -194,6 +173,7 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Prayer Times Section */}
         <section className="py-8 bg-secondary/30">
           <div className="container px-4">
             <div className="flex items-center justify-between mb-6">
@@ -203,25 +183,16 @@ export default function HomePage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold">Prayer Times</h2>
-                  <p className="text-sm text-muted-foreground flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    Current Location ✓
-                  </p>
+                  <p className="text-sm text-muted-foreground">Current Location Detected</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={requestLocation} className="gap-2">
-                  <RefreshCw className="h-4 w-4" />
-                  Update
-                </Button>
-                <Link href="/settings">
-                  <Button variant="ghost" size="sm">
-                    <Settings className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
+              <Button variant="outline" size="sm" onClick={requestLocation} className="gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Update
+              </Button>
             </div>
 
+            {/* Next Prayer */}
             {nextPrayer && !isLoading && (
               <Card className="mb-6 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
                 <CardContent className="p-6">
@@ -240,6 +211,7 @@ export default function HomePage() {
               </Card>
             )}
 
+            {/* Prayer Times Grid */}
             {error ? (
               <Card className="p-8 text-center">
                 <p className="text-destructive mb-4">{error}</p>
@@ -268,10 +240,55 @@ export default function HomePage() {
                 })}
               </div>
             )}
+
+            {/* Hijri Date */}
+            {dateInfo && (
+              <div className="mt-6 text-center">
+                <p className="text-lg font-medium">
+                  {dateInfo.hijri.day} {dateInfo.hijri.month.en} {dateInfo.hijri.year}
+                </p>
+                <p className="text-sm text-muted-foreground">{dateInfo.hijri.month.ar}</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Quick Actions */}
+        <section className="py-12">
+          <div className="container px-4">
+            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              <Link href="/quran">
+                <Card className="p-6 hover:bg-secondary/50 transition-colors cursor-pointer h-full">
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Book className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg">Read Quran</h3>
+                      <p className="text-sm text-muted-foreground">Explore the Holy Quran</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+              <Link href="/settings">
+                <Card className="p-6 hover:bg-secondary/50 transition-colors cursor-pointer h-full">
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Settings className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg">Settings</h3>
+                      <p className="text-sm text-muted-foreground">Customize your experience</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="border-t border-border py-6">
         <div className="container px-4">
           <p className="text-sm text-muted-foreground text-center">

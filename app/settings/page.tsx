@@ -24,7 +24,7 @@ export default function SettingsPage() {
               </div>
               <h1 className="text-3xl font-bold">Settings</h1>
             </div>
-            <p className="text-muted-foreground ml-[3.25rem]">
+            <p className="text-muted-foreground ml-13">
               Customize your Nur+ experience
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function SettingsPage() {
             <GeneralSettings />
           </TabsContent>
 
-           <TabsContent value="quran">
+          <TabsContent value="quran">
             <QuranSettings />
           </TabsContent>
 
