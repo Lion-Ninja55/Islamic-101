@@ -53,7 +53,8 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
         })
         const data = await response.json()
 
-        const transResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.sahih`, {
+        const translationEdition = settings.quranTranslation || 'en.sahih'
+        const transResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/${translationEdition}`, {
           signal: abortController.signal,
         })
         const transData = await transResponse.json()
@@ -148,6 +149,40 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
 
   const handleGotoAyah = (newSurahNumber: number) => {
     router.push(`/quran?surah=${newSurahNumber}`)
+  }
+
+  const [surahAyahBookmarks, setSurahAyahBookmarks] = useState<Record<number, number[]>>({})
+
+  useEffect(() => {
+    const ayahBookmarks = JSON.parse(localStorage.getItem('quran-ayah-bookmarks') || '{}')
+    setSurahAyahBookmarks(ayahBookmarks)
+  }, [])
+
+  const toggleAyahBookmark = (ayahNum: number) => {
+    const ayahBookmarks = JSON.parse(localStorage.getItem('quran-ayah-bookmarks') || '{}')
+    const surahAyahs = ayahBookmarks[surahNumber] || []
+    let newSurahAyahs
+    if (surahAyahs.includes(ayahNum)) {
+      newSurahAyahs = surahAyahs.filter((a: number) => a !== ayahNum)
+    } else {
+      // Check if surah is bookmarked
+      const surahBookmarks = JSON.parse(localStorage.getItem('quran-bookmarks') || '[]')
+      if (surahBookmarks.includes(surahNumber)) {
+        alert('Only one of them is possible. Ayah is preferred in most cases.')
+        return
+      }
+      newSurahAyahs = [...surahAyahs, ayahNum]
+    }
+    const newAyahBookmarks = { ...ayahBookmarks, [surahNumber]: newSurahAyahs }
+    if (newSurahAyahs.length === 0) {
+      delete newAyahBookmarks[surahNumber]
+    }
+    localStorage.setItem('quran-ayah-bookmarks', JSON.stringify(newAyahBookmarks))
+    setSurahAyahBookmarks(newAyahBookmarks)
+  }
+
+  const isAyahBookmarked = (ayahNum: number) => {
+    return surahAyahBookmarks[surahNumber]?.includes(ayahNum) || false
   }
 
   const filteredSurahs = surahs.filter(s => 
@@ -302,13 +337,30 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
           </div>
                 </div>
 
-                {showTranslation && translationText[ayah.verse_number] && (
+                 {showTranslation && translationText[ayah.verse_number] && (
                   <div className="mt-3 ml-11">
                     <p className="text-muted-foreground text-sm md:text-base leading-relaxed break-words">
                       {translationText[ayah.verse_number]}
                     </p>
                   </div>
                 )}
+                <button
+                  onClick={() => toggleAyahBookmark(ayah.verse_number)}
+                  className="mt-2 ml-11 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                  title={isAyahBookmarked(ayah.verse_number) ? 'Remove ayah bookmark' : 'Bookmark this ayah'}
+                >
+                  {isAyahBookmarked(ayah.verse_number) ? (
+                    <>
+                      <BookmarkCheck className="h-3.5 w-3.5" />
+                      <span>Bookmarked</span>
+                    </>
+                  ) : (
+                    <>
+                      <Bookmark className="h-3.5 w-3.5 opacity-50" />
+                      <span>Bookmark</span>
+                    </>
+                  )}
+                </button>
               </div>
             ))}
           </div>

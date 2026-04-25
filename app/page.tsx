@@ -155,23 +155,8 @@ export default function HomePage() {
     return `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`
   }
 
-  const formatDate = (date: Date, language: string): string => {
-    const formats: Record<string, (d: Date) => string> = {
-      en: (d) => d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
-      ar: (d) => d.toLocaleDateString('ar-SA', { day: 'numeric', month: 'long', year: 'numeric' }),
-      ur: (d) => d.toLocaleDateString('ur-PK', { day: 'numeric', month: 'long', year: 'numeric' }),
-      bn: (d) => d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' }),
-      id: (d) => d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
-      tr: (d) => d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }),
-      fr: (d) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
-      de: (d) => d.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }),
-      es: (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
-    }
-    return formats[language]?.(date) || formats['en'](date)
-  }
-
   const today = new Date()
-  const formattedDate = formatDate(today, settings.dateLanguage)
+  const formattedDate = today.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
 
   return (
     <div className="min-h-screen flex flex-col">

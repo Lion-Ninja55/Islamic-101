@@ -111,21 +111,7 @@ export function QuranSettings() {
             </p>
           </div>
 
-          {/* Line Spacing */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <Label>Line Spacing</Label>
-              <span className="text-sm text-muted-foreground">{settings.linesPerPage} lines/page</span>
-            </div>
-            <Slider
-              value={[settings.linesPerPage]}
-              min={8}
-              max={20}
-              step={2}
-              onValueChange={([value]) => updateSettings({ linesPerPage: value })}
-              className="max-w-md"
-            />
-          </div>
+
         </CardContent>
       </Card>
 
@@ -158,7 +144,7 @@ export function QuranSettings() {
             />
           </div>
 
-          <div className="space-y-3">
+           <div className="space-y-3">
             <Label>Translation Language</Label>
             <Select
               value={settings.quranTranslation}
@@ -175,19 +161,6 @@ export function QuranSettings() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Show Transliteration</Label>
-              <p className="text-sm text-muted-foreground">
-                Display Arabic transliteration in Latin script
-              </p>
-            </div>
-            <Switch
-              checked={settings.showTransliteration}
-              onCheckedChange={(checked) => updateSettings({ showTransliteration: checked })}
-            />
           </div>
         </CardContent>
       </Card>

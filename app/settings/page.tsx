@@ -5,8 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { QuranSettings } from '@/components/settings/quran-settings'
 import { SalahSettings } from '@/components/settings/salah-settings'
 import { GeneralSettings } from '@/components/settings/general-settings'
-import { LocationSettings } from '@/components/settings/location-settings'
-import { Book, Clock, Settings, MapPin } from 'lucide-react'
+import { Book, Clock, Settings } from 'lucide-react'
 
 export default function SettingsPage() {
   return (
@@ -32,14 +31,10 @@ export default function SettingsPage() {
         </div>
 
         <Tabs defaultValue="general" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 h-auto bg-muted/50 p-1.5 rounded-xl border border-border/50">
+          <TabsList className="grid w-full grid-cols-3 h-auto bg-muted/50 p-1.5 rounded-xl border border-border/50">
             <TabsTrigger value="general" className="gap-2 py-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-primary/20">
               <Settings className="h-4 w-4" />
               <span className="hidden sm:inline">General</span>
-            </TabsTrigger>
-            <TabsTrigger value="location" className="gap-2 py-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-primary/20">
-              <MapPin className="h-4 w-4" />
-              <span className="hidden sm:inline">Location</span>
             </TabsTrigger>
             <TabsTrigger value="quran" className="gap-2 py-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-primary/20">
               <Book className="h-4 w-4" />
@@ -55,11 +50,7 @@ export default function SettingsPage() {
             <GeneralSettings />
           </TabsContent>
 
-          <TabsContent value="location">
-            <LocationSettings />
-          </TabsContent>
-
-          <TabsContent value="quran">
+           <TabsContent value="quran">
             <QuranSettings />
           </TabsContent>
 
