@@ -1,6 +1,6 @@
-# 🕌 Nur+ | Islamic Companion
+# Nur+ | Islamic Companion
 
-> Your comprehensive Islamic companion for Quran reading and accurate prayer times — built with modern web technology and beautiful design.
+Your comprehensive Islamic companion for Quran reading and accurate prayer times — built with modern web technology and thoughtful design.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.0-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-blue?logo=typescript)](https://www.typescriptlang.org/)
@@ -9,287 +9,301 @@
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [✨ Features](#-features)
-- [🚀 Getting Started](#-getting-started)
-- [🎨 Theme & Customization](#-theme--customization)
-- [📱 Pages & Navigation](#-pages--navigation)
-- [⚙️ Settings](#️-settings)
-- [📡 APIs Used](#-apis-used)
-- [🏗️ Project Structure](#️-project-structure)
-- [🎯 Future Roadmap](#-future-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Theme & Customization](#theme--customization)
+- [Pages & Navigation](#pages--navigation)
+- [Settings](#settings)
+- [External APIs](#external-apis)
+- [Project Structure](#project-structure)
+- [Development Guidelines](#development-guidelines)
+- [Known Issues & Limitations](#known-issues--limitations)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
 ---
 
-## ✨ Features
+## Features
 
-### 🕋 Prayer Times (Home Page)
+### Prayer Times (Home Page)
 
-- **Real-time countdown** to the next prayer (updates every second)
-- **Automatic location detection** via browser geolocation + reverse geocoding
-- **Manual location entry** with latitude/longitude or city search
-- **15 calculation methods** supporting different Islamic organizations worldwide:
+- Modern and Hijri date display at the top of the page
+- Real-time countdown to the next prayer, updating every second
+- Current location indicator with checkmark
+- Automatic location detection using browser geolocation and reverse geocoding
+- Manual coordinate entry with latitude/longitude or city search
+- 15 calculation methods supporting different Islamic organizations worldwide:
   - ISNA (Islamic Society of North America)
-  - MWL (Muslim World League)
-  - Umm Al-Qura University (Makkah)
+  - Muslim World League
+  - Umm Al-Qura University, Makkah
   - Egyptian General Authority of Survey
   - And 11 more regional methods
-- **Asr juristic methods**: Standard (Shafi/Maliki/Hanbali) and Hanafi
-- **High latitude rules** for extreme latitudes (angle, oneseventh, midnight)
-- **Manual adjustments**: ±30 minutes per prayer
-- **Hijri date display** with Arabic month name
-- **Hijri adjustment**: ±2 days for local moon sighting
-- **12/24-hour time format** toggle
-- **Next prayer highlighted** with ring indicator
+- Asr juristic methods: Standard (Shafi, Maliki, Hanbali) and Hanafi
+- High latitude rules for extreme latitudes (angle, oneseventh, midnight)
+- Manual time adjustments: ±30 minutes per prayer
+- Hijri date display with Arabic month name
+- Hijri date adjustment: ±2 days for local moon sighting
+- 12/24-hour time format toggle
+- Next prayer highlighted with a ring indicator
 
-### 📖 Quran Reader
+### Quran Reader
 
-- **Browse all 114 surahs** with Arabic names, English translations, and revelation types
-- **Search surahs** by name (English/Arabic) or number
-- **Read in Arabic** using the Mishary Rashid Alafasy recitation text
-- **View translations** in 19 languages:
-  - English (Sahih International, Yusuf Ali, Pickthall, Asad, Shakir, Hilali & Khan)
-  - Urdu, Bengali, Indonesian, Turkish, French, German, Spanish, Russian, Italian, Dutch
-- **Adjustable Arabic font size** (18–48px) with live preview
-- **Toggle translation** on/off with one click
-- **Bismillah** displayed separately before each surah (except Surah At-Tawbah)
-- **Clean verse numbering** with circular badges
-- **Smooth scrolling** and responsive layout
-- **Direct linking**: Share `?surah=1` to link directly to a surah
+- Browse all 114 surahs with Arabic names, English translations, and revelation types
+- Search surahs by name (English/Arabic) or number; shows "No results found" when empty
+- Bookmark surahs for quick access to favorite readings
+- Previous/Next navigation between surahs
+- Arabic text from the Mishary Rashid Alafasy recitation
+- English translation (Sahih International) with potential for additional languages
+- Adjustable Arabic font size (18–48px) with live preview
+- Toggle translation visibility on or off
+- Bismillah displayed separately before each surah (except Surah At-Tawbah)
+- Clean verse numbering with circular badges
+- Smooth scrolling and responsive layout
+- Direct linking via URL query parameter (?surah=1)
 
-### 🎨 Theme & Colors
+### Theme & Colors
 
-- **Dark mode** with beautiful deep navy/black palette
-- **Light mode** with soft cream backgrounds
-- **7 accent colors**: Green (default), Gold, Blue, Cyan, Red, Purple, Orange
-- **Dark mode accent variants**: Lighter, more vibrant tones including Silver and Gray
-- **System theme** auto-detection (follows OS preference)
-- **Custom Arabic font**: Amiri for beautiful Quranic text
-- **Modern sans-serif**: Geist for UI elements
+- Dark mode with deep navy/black palette
+- Light mode with soft cream backgrounds
+- Seven accent colors: green (default), gold, blue, cyan, red, purple, orange
+- Dark mode accent variants: lighter, more vibrant tones including silver and gray
+- System theme auto-detection (follows OS preference)
+- Custom Arabic font (Amiri) for Quranic text
+- Modern sans-serif (Geist) for UI elements
 
-### ⚙️ Comprehensive Settings
+### Comprehensive Settings
 
-All settings are **persisted to localStorage** and sync across app restarts.
+All settings are persisted to localStorage and automatically synchronized across app sessions.
 
-**General:**
-- Theme selection (Light/Dark/System)
-- Accent color picker
+**General**
+- Theme selection (Light, Dark, System)
+- Accent color picker with dark mode variants
 - Interface language (8 options)
-- Time format (12h/24h)
+- Time format (12h or 24h)
 - Hijri date adjustment (±2 days)
-- Reset all settings
+- Date format (6 options: DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD, etc.)
+- Date language (9 options)
+- Reset all settings to defaults
 
-**Quran:**
-- Arabic font size slider with live preview
-- Line spacing control (8–20 lines)
-- Translation language selector (19 languages)
+**Quran**
+- Arabic font size slider (18–48px) with live preview
+- Line spacing control (8–20 lines) — UI ready, pending implementation
+- Translation language selector (28+ languages available)
 - Toggle translation on/off
-- Toggle transliteration (UI ready, data pending)
-- Quran theme selector (classic/modern/sepia — ready for future use)
+- Toggle transliteration (setting present, data pending)
+- Ayah numbering language: English, Arabic, or Urdu
+- Quran theme selector (classic, modern, sepia) — prepared for future use
 
-**Salah (Prayer):**
-- 15+ calculation methods from around the world
-- Asr juristic method (Standard vs Hanafi)
-- High latitude rule selector
-- Midnight calculation method
-- Per-prayer time adjustments (±30 min)
-- Notification configuration:
-  - Per-prayer enable/disable
-  - Before-Adhan reminder (0–60 min)
+**Salah (Prayer)**
+- 15 calculation methods from around the world
+- Asr juristic method: Standard vs Hanafi
+- High latitude rule selection
+- Midnight calculation method (Standard or Jafari)
+- Per-prayer time adjustments: ±30 minutes
+- Notification configuration (master enable, per-prayer toggles, before-adhan reminder 0–60 minutes)
+
+**Location**
+- Automatic detection via browser geolocation
+- Manual entry of coordinates with validation
+- Display of current city and country
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- **Node.js** 18 or higher
-- **npm** or **yarn** or **pnpm** package manager
+- Node.js 18 or higher
+- npm, yarn, or pnpm
 
 ### Installation
 
-1. **Clone the repository:**
+1. Clone the repository:
    ```bash
    git clone https://github.com/Lion-Ninja55/Islamic-101.git
    cd Islamic-101
    ```
 
-2. **Install dependencies:**
+2. Install dependencies:
    ```bash
    npm install
-   # or
-   yarn install
-   # or
-   pnpm install
+   # or yarn install
+   # or pnpm install
    ```
 
-3. **Run the development server:**
+3. Run the development server:
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
+   # or yarn dev
+   # or pnpm dev
    ```
 
-4. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
 
-### Build for Production
+### Production Build
 
 ```bash
 npm run build
 npm start
 ```
 
-The app will be available at `http://localhost:3000`
+The application will be available at `http://localhost:3000`.
 
 ---
 
-## 🎨 Theme & Customization
+## Theme & Customization
 
 ### Color System
 
-Nur+ uses **OKLCH color space** for perceptually uniform, accessible colors. The accent color system dynamically changes `--primary`, `--accent`, and `--ring` CSS variables throughout the app.
+Nur+ uses OKLCH color space for perceptually uniform, accessible colors. The accent color system dynamically updates the `--primary`, `--accent`, and `--ring` CSS variables throughout the application.
 
 ### Changing Accent Color
 
-1. Go to **Settings** → **General**
-2. Click any color circle in the "Accent Color" section
-3. All buttons, badges, rings, and highlights update instantly
+1. Navigate to Settings → General
+2. Click any of the color circles in the Accent Color section
+3. All interactive elements update instantly to reflect the new color
 
-**Light mode accent palette:**
-| Color | OKLCH Value | Preview |
-|-------|------------|---------|
-| Green (default) | `oklch(0.45 0.12 160)` | 🟢 |
-| Gold | `oklch(0.65 0.15 55)` | 🟡 |
-| Blue | `oklch(0.50 0.12 220)` | 🔵 |
-| Cyan | `oklch(0.50 0.14 190)` | 🔷 |
-| Red | `oklch(0.55 0.15 25)` | 🔴 |
-| Purple | `oklch(0.55 0.15 290)` | 🟣 |
-| Orange | `oklch(0.65 0.18 35)` | 🟠 |
+**Light mode palette**
 
-**Dark mode** uses lighter, more vibrant variants of each color for better contrast.
+| Color | OKLCH Value |
+|-------|-------------|
+| Green (default) | oklch(0.45 0.12 160) |
+| Gold | oklch(0.65 0.15 55) |
+| Blue | oklch(0.50 0.12 220) |
+| Cyan | oklch(0.50 0.14 190) |
+| Red | oklch(0.55 0.15 25) |
+| Purple | oklch(0.55 0.15 290) |
+| Orange | oklch(0.65 0.18 35) |
+
+Dark mode uses lighter, more vibrant variants of each color for better contrast.
 
 ---
 
-## 📱 Pages & Navigation
+## Pages & Navigation
 
-### Home Page (`/`)
+### Home Page (/)
 
-**What you'll see:**
-1. **Bismillah header** — Beautiful Arabic calligraphy with English translation
-2. **Prayer times section**:
-   - Next prayer card with live countdown
-   - Grid of all 6 prayer times (Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha)
+**What you'll see**
+
+1. Date bar showing the modern Gregorian date (in selected language) and the Hijri date
+2. Bismillah header in beautiful Arabic calligraphy with English translation
+3. Prayer times section:
+   - Next prayer card with a live countdown timer
+   - Grid displaying all six prayer times (Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha)
    - Hijri date with Arabic month name
-   - "Update Location" button for manual refresh
-3. **Quick actions**:
-   - "Read Quran" → opens Quran page
-   - "Settings" → opens settings hub
-4. **Footer** with Islamic greeting
+   - "Update Location" button to refresh location manually
+4. Footer with an Islamic greeting
 
-**How it works:**
-- On first visit, browser asks for location permission
-- If granted, app fetches prayer times from AlAdhan API
-- If denied, you can manually enter coordinates in Settings → Salah
-- Countdown timer ticks every second to show time remaining
+**Behavior**
 
-### Quran Page (`/quran`)
+- On first visit, the browser requests location permission.
+- If granted, prayer times are fetched from the AlAdhan API.
+- If denied, coordinates can be entered manually in Settings → Location.
+- The countdown timer ticks every second to show time remaining until the next prayer.
 
-**Two views:**
+### Quran Page (/quran)
 
-#### View 1: Surah List
-- Grid of card displays (3 columns on desktop, 1 on mobile)
-- Each card shows:
-  - Surah number in primary-colored circle
-  - Arabic name (Amiri font)
-  - English name + translation
-  - Ayah count badge
-  - Revelation type (Meccan/Medinan)
-- **Search bar** at top filters in real-time
-- Click any card to open that surah
+Two views are available:
 
-#### View 2: Quran Reader
-**Sticky header with:**
+**Surah List**
+
+- Responsive grid (3 columns on desktop, 1 on mobile)
+- Each card displays:
+  - Surah number inside a primary-colored circle
+  - Arabic name in Amiri font
+  - English name and translation
+  - Number of ayahs
+  - Revelation type (Meccan or Medinan)
+- Search bar filters surahs in real time; helpful message appears when no results match
+
+**Quran Reader**
+
+Sticky header contains:
 - Back button (returns to list)
-- Current surah name + ayah count
+- Current surah name and ayah count
 - Search dropdown for quick surah navigation
-- "Show/Hide Translation" toggle
+- Show/Hide Translation toggle
 
-**Reading view:**
-- Bismillah displayed at top (except Surah 9)
-- Each ayah in its own block with:
-  - Verse number in circle (left side)
-  - Arabic text (right-aligned, RTL)
-  - Translation below (if enabled)
-- Bottom padding for comfortable reading
-- Smooth scrolling
+Reading view presents:
+- Bismillah at the top (omitted for Surah At-Tawbah)
+- Each ayah in a separate block:
+  - Verse number inside a small circle
+  - Arabic text aligned to the right (RTL)
+  - Translation displayed below if enabled
+- Comfortable bottom padding for scrolling
+- Smooth transitions
 
-**Navigation:**
-- Use the search dropdown to jump to any surah
-- URL updates automatically — share links preserve surah
+Navigation:
+- Use the search dropdown to jump directly to any surah.
+- URL updates automatically; share links preserve the selected surah.
 
-### Settings Page (`/settings`)
+### Settings Page (/settings)
 
-**Three tabs:**
+Four tabs organize configuration:
 
-#### 🔹 General
-- Theme picker (Light/Dark/System)
+**General**
+- Theme picker (Light, Dark, System)
 - Accent color selector
 - Interface language (8 options)
 - Time format (12h/24h)
 - Hijri date offset (±2 days)
-- Reset all settings button
+- Date format (six options)
+- Date language (nine options)
+- Reset all settings button with confirmation dialog
 
-#### 📖 Quran
-- Font size slider (18–48px) — live Bismillah preview
-- Line spacing slider (8–20)
-- Translation language dropdown (19 options)
-- Toggle translation (on by default)
-- Toggle transliteration (UI ready, data pending)
-- Quran theme selector (inactive, reserved)
+**Location**
+- Displays current coordinates and city/country
+- Automatic detection button
+- Manual entry fields with validation
+- Reference list of common city coordinates
+
+**Quran**
+- Font size and line spacing sliders
+- Translation language selection
+- Toggle translation and transliteration
+- Ayah numbering language selector
 - Quran statistics card
 
-#### 🕋 Salah
-- **Calculation method** dropdown (15 world methods)
-- **Asr method**: Standard vs Hanafi
-- **High latitude rule**: angle / oneseventh / midnight
-- **Midnight mode**: Standard / Jafari
-- **Per-prayer adjustments**: Sliders for each prayer (-30 to +30 min)
-- **Notifications** (configuration only):
-  - Master enable/disable
-  - Individual toggles for all 6 prayers
-  - Before-Adhan reminder timing (0–60 min)
+**Salah**
+- Calculation method dropdown (15 regional methods)
+- Asr method (Standard or Hanafi)
+- High latitude rule selector
+- Midnight calculation mode
+- Per-prayer adjustment sliders
+- Notification settings (enable, per-prayer toggles, before-adhan reminder)
 
 ---
 
-## ⚙️ Settings Reference
+## Settings Reference
 
-### All Configuration Options
+### Configuration Schema
 
 ```typescript
 // Accent Color
 accentColor: 'green' | 'gold' | 'blue' | 'cyan' | 'red' | 'purple' | 'orange'
 
 // Quran
-quranFontSize: 18–48 (default: 28)
-quranTranslation: 'en.sahih' | 'en.asad' | 'en.pickthall' | ... (19 total)
+quranFontSize: number (18–48, default: 28)
+quranTranslation: string (e.g., 'en.sahih')
+quranReciter: string (default: 'ar.alafasy')
 showTranslation: boolean (default: true)
 showTransliteration: boolean (default: false)
 quranTheme: 'classic' | 'modern' | 'sepia' (default: 'classic')
-linesPerPage: 8–20 (default: 16)
+linesPerPage: number (8–20, default: 16)
+ayahNumbering: 'english' | 'arabic' | 'urdu' (default: 'english')
 
 // Salah
-calculationMethod: '0'–'15' (default: '2' = ISNA)
+calculationMethod: string ('0'–'15', default: '2' = ISNA)
 asrJuristic: 'standard' | 'hanafi' (default: 'standard')
 highLatitudeRule: 'angle' | 'oneseventh' | 'midnight' (default: 'angle')
 midnightMode: 'standard' | 'jafari' (default: 'standard')
 adjustments: {
-  fajr: number (-30 to 30, default: 0)
+  fajr: number (-30 to 30)
   sunrise: number
   dhuhr: number
   asr: number
@@ -306,7 +320,7 @@ notifications: {
   asr: boolean (default: true)
   maghrib: boolean (default: true)
   isha: boolean (default: true)
-  beforeAdhan: number 0–60, step 5 (default: 15)
+  beforeAdhan: number (0–60, step 5, default: 15)
 }
 
 // Location
@@ -322,15 +336,17 @@ location: {
 language: 'en' | 'ar' | 'ur' | 'bn' | 'id' | 'tr' | 'fr' | 'ms' (default: 'en')
 hijriAdjustment: -2 | -1 | 0 | 1 | 2 (default: 0)
 timeFormat: '12h' | '24h' (default: '12h')
+dateFormat: string (default: 'dd_MM_yyyy')
+dateLanguage: string (default: 'en')
 ```
 
 ### Prayer Calculation Methods
 
-| Value | Method Name | Region |
-|-------|------------|--------|
+| Value | Method | Region |
+|-------|--------|--------|
 | 0 | Jafari / Shia Ithna-Ashari | Shia Muslims |
 | 1 | University of Islamic Sciences, Karachi | Pakistan, Bangladesh |
-| 2 | Islamic Society of North America (ISNA) | USA, Canada (default) |
+| 2 | Islamic Society of North America (ISNA) | USA, Canada |
 | 3 | Muslim World League | Europe, Far East, Africa |
 | 4 | Umm Al-Qura University, Makkah | Saudi Arabia |
 | 5 | Egyptian General Authority of Survey | North Africa, Syria, Lebanon |
@@ -346,64 +362,61 @@ timeFormat: '12h' | '24h' (default: '12h')
 
 ---
 
-## 📡 External APIs
+## External APIs
 
-### 1. AlAdhan Prayer Times API
-- **Base URL:** `https://api.aladhan.com/v1`
-- **Endpoint used:** `/timings/{date}`
-- **Purpose:** Fetches accurate prayer times based on location and calculation method
-- **Rate limit:** Free, no API key required
-- **Documentation:** [aladhan.com/apidocs](http://aladhan.com/apidocs)
+### AlAdhan Prayer Times API
+- **Endpoint**: `https://api.aladhan.com/v1/timings/{date}`
+- **Purpose**: Provides accurate prayer times based on geographic location and calculation method
+- **Rate limit**: Free, no API key required
+- **Documentation**: [aladhan.com/apidocs](http://aladhan.com/apidocs)
 
-### 2. AlQuran Cloud API
-- **Base URL:** `https://api.alquran.cloud/v1`
-- **Endpoints used:**
-  - `/surah` — Get list of all 114 surahs
-  - `/surah/{number}/ar.alafasy` — Get Arabic text for a surah
-  - `/surah/{number}/en.sahih` — Get English translation (or other edition based on settings)
-- **Editions:** 1 Arabic edition (alafasy) + 19 translation editions
-- **Audio:** CDN URLs available but not currently used
-- **Documentation:** [alquran.cloud/api](https://alquran.cloud/api)
+### AlQuran Cloud API
+- **Base URL**: `https://api.alquran.cloud/v1`
+- **Endpoints used**:
+  - `/surah` — Retrieve list of all 114 surahs
+  - `/surah/{number}/ar.alafasy` — Arabic text for a surah
+  - `/surah/{number}/en.sahih` — English translation
+- **Editions**: 1 Arabic edition (alafasy) + multiple translation editions
+- **Documentation**: [alquran.cloud/api](https://alquran.cloud/api)
 
-### 3. BigDataCloud Reverse Geocoding
-- **Base URL:** `https://api.bigdatacloud.net/data`
-- **Endpoint used:** `/reverse-geocode-client`
-- **Purpose:** Converts lat/lng coordinates into readable city/country names
-- **Rate limit:** 500 requests/day free tier
-- **Documentation:** [bigdatacloud.com/geocoding](https://www.bigdatacloud.com/geocoding)
+### BigDataCloud Reverse Geocoding
+- **Endpoint**: `https://api.bigdatacloud.net/data/reverse-geocode-client`
+- **Purpose**: Converts latitude and longitude into readable city and country names
+- **Rate limit**: 500 requests per day on the free tier
+- **Documentation**: [bigdatacloud.com/geocoding](https://www.bigdatacloud.com/geocoding)
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
-Islamic-101/
-├── app/                          # Next.js App Router pages
-│   ├── layout.tsx                # Root layout with ThemeProvider, SettingsProvider
+NurPlus/
+├── app/                          # Next.js App Router
+│   ├── layout.tsx                # Root layout (ThemeProvider, SettingsProvider)
 │   ├── page.tsx                  # Home page (prayer times)
 │   ├── globals.css               # Global styles, CSS variables, fonts
 │   ├── quran/
-│   │   └── page.tsx              # Quran page with surah list & reader
+│   │   └── page.tsx              # Quran page (list + reader)
 │   └── settings/
 │       └── page.tsx              # Settings hub with tabs
 │
 ├── components/
-│   ├── navigation.tsx             # Responsive navbar with mobile sheet
+│   ├── navigation.tsx             # Responsive header with mobile sheet
 │   ├── theme-provider.tsx         # next-themes wrapper
-│   ├── accent-color-handler.tsx   # Accent color → CSS variables
+│   ├── accent-color-handler.tsx   # Applies accent color data attribute
 │   │
 │   ├── quran/
 │   │   ├── surah-list.tsx         # Grid of surah cards
-│   │   ├── quran-reader.tsx       # Full reading view with Bismillah logic
-│   │   └── quran-facts.tsx        # Daily rotating Quran facts card
+│   │   ├── quran-reader.tsx       # Full reading view with Bismillah handling
+│   │   └── quran-facts.tsx        # Rotating Quran facts card
 │   │
 │   ├── settings/
-│   │   ├── general-settings.tsx   # Theme, accent, language, time format
+│   │   ├── general-settings.tsx   # Theme, colors, language, date/time format
 │   │   ├── quran-settings.tsx     # Font, translation, display options
 │   │   ├── salah-settings.tsx     # Prayer calculation & notifications
-│   │   └── location-settings.tsx  # Location management (⚠️ orphaned, unused)
+│   │   └── location-settings.tsx  # Location management
 │   │
-│   └── ui/                        # shadcn/ui component library (70+ components)
+│   └── ui/                        # shadcn/ui component library
 │
 ├── context/
 │   └── settings-context.tsx       # Global settings state + localStorage sync
@@ -413,47 +426,27 @@ Islamic-101/
 │   └── use-mobile.ts              # Mobile breakpoint detection
 │
 ├── lib/
-│   ├── utils.ts                   # cn() utility for Tailwind class merging
+│   ├── utils.ts                   # Tailwind class merging utility
 │   └── api-config.json            # API endpoints documentation
 │
 ├── public/                        # Static assets (icons, images)
 │
-├── package.json                   # Dependencies & scripts
+├── package.json                   # Dependencies and scripts
 ├── tsconfig.json                  # TypeScript configuration
-├── next.config.mjs                # Next.js config (allows TS build errors)
+├── next.config.mjs                # Next.js configuration
 ├── postcss.config.mjs             # PostCSS with Tailwind v4
 ├── tailwind.config.js             # Tailwind configuration
-├── components.json                # shadcn/ui config
-└── README.md                      # This file
+├── components.json                # shadcn/ui configuration
+├── eslint.config.mjs              # ESLint flat config (Next.js)
+├── .eslintignore                 # ESLint ignore patterns
+└── README.md                      # Project documentation
 ```
 
 ---
 
-## 🎯 User Workflows
+## Development Guidelines
 
-### First-Time User Flow
-
-1. **Open app** → See Bismillah header + prayer times section
-2. **Grant location permission** → App automatically detects city & fetches prayer times
-3. **Browse Quran** → Click "Read Quran" card → Select a surah → Start reading
-4. **Customize** → Visit Settings → Change accent color, font size, prayer method, etc.
-5. **Everything saves automatically** — close and reopen anytime, preferences persist
-
-### Power User Flow
-
-1. **Set precise location** → Enter exact coordinates for accurate times
-2. **Choose calculation method** → Select regional method (e.g., ISNA, MWL)
-3. **Adjust prayer times** → Fine-tune each prayer by ±30 minutes if needed
-4. **Enable notifications** → Get reminders before each prayer
-5. **Pick favorite translation** → Switch from Sahih International to another language
-6. **Increase font size** → For comfortable reading on larger screens
-7. **Toggle translation** → Hide translations when you want pure Arabic focus
-
----
-
-## 🔧 Development Notes
-
-### Key Technologies
+### Technology Stack
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
@@ -461,137 +454,127 @@ Islamic-101/
 | React | 19.2.4 | UI library |
 | TypeScript | 5.7.3 | Type safety |
 | Tailwind CSS | 4.2.0 | Utility-first CSS |
-| next-themes | — | Dark/light theme management |
-| Radix UI | — | Accessible UI primitives |
+| next-themes | 0.4.6 | Dark/light theme management |
+| Radix UI | Various | Accessible UI primitives |
 | shadcn/ui | — | Pre-built UI components |
 | lucide-react | — | Icon library |
-| AlAdhan API | — | Prayer times |
-| AlQuran Cloud API | — | Quran text & translations |
 
 ### State Management
 
-- **Settings**: React Context (`SettingsProvider`) with localStorage persistence
-- **UI State**: Local `useState` within components (loading, search, dropdowns)
-- **No Redux/Zustand** — simple Context is sufficient
+- Settings are managed via React Context (`SettingsProvider`) with automatic `localStorage` persistence.
+- UI state (loading, search, dropdowns) is kept in local component state using `useState`.
+- No external state library (Redux/Zustand) is used; Context is sufficient for this scope.
 
 ### Data Fetching
 
-- **Client-side fetching** using native `fetch` API (no SWR/React Query)
-- **Parallel requests** for Arabic + translation in Quran reader
-- **No caching** — data refetched on every surah view (can be optimized with SWR)
+- Client-side `fetch` API; no SWR or React Query.
+- Parallel requests for Arabic text and translation in the Quran reader.
+- No caching layer; data is refetched each time a surah is opened (future optimization possible).
 
 ### Styling Approach
 
-- **Tailwind CSS v4** with `@tailwindcss/postcss` plugin
-- **CSS custom properties** for dynamic theming (OKLCH colors)
-- **Responsive design** with mobile-first approach
-- **Custom Arabic font** via Google Fonts (Amiri)
-- **Break words** for Arabic text to prevent overflow
+- Tailwind CSS v4 with `@tailwindcss/postcss` plugin.
+- CSS custom properties for theming (OKLCH color space).
+- Mobile-first responsive design.
+- Google Fonts: Amiri (Arabic), Geist (sans-serif), Geist Mono (monospace).
+- `word-break: break-word` for Arabic text to handle long ayahs gracefully.
+
+### Code Quality
+
+- TypeScript with strict mode enabled.
+- ESLint with Next.js recommended rules (`eslint-config-next`).
+- Prettier formatting (if configured in editor).
+- Accessible components built on Radix UI primitives.
 
 ---
 
-## ⚠️ Known Issues & Limitations
+## Known Issues & Limitations
 
-### Bugs
-- **Translation language setting not respected:** The Quran reader always fetches English (`en.sahih`) regardless of the selected translation in settings. The dropdown changes the setting but the API call is hardcoded. Needs fix in `quran-reader.tsx` line 59.
-- **Location settings component orphaned:** `components/settings/location-settings.tsx` exists but is never used. Location handling is done inline in `page.tsx` and `salah-settings.tsx`.
-- **Missing `/salah` page:** Build artifacts show `/salah` route, but the source file is missing from `app/salah/page.tsx`.
+The following items are noted for future development:
 
-### Incomplete Features
-- **Transliteration**: Setting exists (`showTransliteration`) but no data is fetched or displayed
-- **Quran themes**: `quranTheme` setting (classic/modern/sepia) has no visual effect yet
-- **Line spacing**: `linesPerPage` setting is unused in current reader layout
-- **Push notifications**: Notification settings are config-only; actual push notifications not implemented (requires service worker, VAPID keys)
-- **UI localization**: Language setting exists but UI text is only English (no translations)
-- **Audio**: API provides audio CDN URLs, but no player built
+- Transliteration setting is present but data is not fetched or displayed.
+- Quran theme options (classic/modern/sepia) have no visual effect yet.
+- Line spacing (`linesPerPage`) is not applied in the current reader layout.
+- Push notifications are not implemented; settings only store preferences.
+- Interface localization is pending; only English text is currently used.
+- Audio playback from the API is not integrated.
+- Ayah numbering language selection is not yet applied in the reader.
+- No image optimization pipeline (not required for current feature set).
 
-### Performance
-- No image optimization (no images in use)
-- No code-splitting at route level (could split Quran data separately)
-- No SWR/React Query for caching API responses
-- All settings stored in single localStorage key (`nurplus-settings`), parsed on every load
+Performance considerations:
+- All API calls are uncached; repeated navigation refetches data.
+- Settings are stored under a single `nurplus-settings` key in localStorage.
+- No code splitting at the route level; could be optimized for large surahs.
 
 ---
 
-## 🗺️ Future Roadmap
+## Roadmap
 
-Based on current codebase, natural next steps:
+High priority items:
+- Implement translation selection (respect `quranTranslation` setting)
+- Add dedicated Salah page with full-screen countdown
+- Implement push notifications for prayer reminders
+- Integrate audio recitation with playback controls
+- Display transliteration for each ayah
 
-### High Priority
-- [ ] **Fix translation bug** — Use `settings.quranTranslation` instead of hardcoded `en.sahih`
-- [ ] **Implement `/salah` page** — Dedicated prayer times display with full-screen countdown
-- [ ] **Push notifications** — Service worker for prayer reminders
-- [ ] **Audio recitation** — Play Arabic audio with play/pause, repeat, speed controls
-- [x] **Bismillah fix** — Strip from first ayah and display separately ✅
-- [ ] **Transliteration display** — Fetch and show Latin-script transliteration
+Medium priority:
+- Bookmark individual ayahs, not just surahs
+- In-surah text search
+- Juz (30th portion) navigation
+- True black OLED night mode
+- Offline caching of recently read surahs
+- Memorization (Hafiz) mode with repeat and hide features
+- Home screen widgets for quick prayer time glance
 
-### Medium Priority
-- [ ] **Bookmarks** — Save favorite surahs/ayahs
-- [ ] **Search within surah** — Text search across current surah
-- [ ] **Juz navigation** — Browse by 30th portions
-- [ ] **Night mode** — True black OLED mode
-- [ ] **Offline support** — Cache recently read surahs with service worker
-- [ ] **Hafiz mode** — Memorization tools (repeat ayah, hide text)
-- [ ] **Widgets** — Desktop/mobile home screen widgets
-
-### Nice-to-Have
-- [ ] **UI translations** — Localize interface to 8 supported languages
-- [ ] **QuranTafseer** — Add tafsir (exegesis) display
-- [ ] **Hadith collection** — Expand beyond Quran
-- [ ] **Dua collection** — Daily duas with categories
-- [ ] **Community** — Prayer time announcements, events
-- [ ] **Export readings** — Track reading history, streaks
-- [ ] **Voice control** — "Read Surah Al-Fatiha" etc.
+Nice to have:
+- Full UI localization into supported languages
+- Tafsir (exegesis) display per ayah
+- Hadith collections
+- Daily Dua library
+- Community features (events, announcements)
+- Reading history and streak tracking
+- Voice commands for navigation
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-This is a private educational project. However, suggestions and bug reports are welcome via GitHub Issues.
+This is an open-source educational project. Contributions, suggestions, and bug reports are welcome via GitHub Issues.
 
-### Development Guidelines
+### Development Workflow
 
-1. **Branch naming**: `feature/xxx` or `fix/xxx`
-2. **Commit messages**: Conventional commits (e.g., `feat: add prayer countdown`, `fix: strip Bismillah from ayah 1`)
-3. **Code style**: Follow existing patterns, use `prettier` if configured
-4. **TypeScript**: No `any` types unless absolutely necessary
-5. **Accessibility**: Use Radix UI components for interactive elements
+1. Fork the repository and create a feature branch (`git checkout -b feature/your-feature`).
+2. Follow the existing code style and patterns.
+3. Ensure TypeScript compiles without errors (`npx tsc --noEmit`).
+4. Run the linter (`npm run lint`) and fix any warnings.
+5. Commit with clear, descriptive messages (Conventional Commits recommended).
+6. Push to your fork and open a pull request.
 
-### Running Tests
+### Coding Standards
+
+- Use TypeScript; avoid `any` types.
+- Prefer Radix UI or shadcn/ui components for accessibility.
+- Keep components small and focused.
+- Add comments only when necessary; aim for self-documenting code.
+- Write accessible markup (ARIA attributes, keyboard navigation).
+
+### Running Checks
 
 ```bash
-npm run lint     # ESLint
-npx tsc --noEmit # TypeScript check
-```
-
-### Building for Production
-
-```bash
-npm run build    # Compiles and checks for errors
-npm start        # Preview production build locally
+npm run lint           # ESLint
+npx tsc --noEmit      # TypeScript type checking
+npm run build         # Production build verification
 ```
 
 ---
 
-## 📄 License
+## License
 
-This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgements
-
-- **AlQuran Cloud API** — Quran data and translations
-- **AlAdhan API** — Accurate prayer times worldwide
-- **BigDataCloud** — Reverse geocoding services
-- **shadcn/ui** — Beautiful, accessible UI components
-- **Tailwind CSS** — Utility-first CSS framework
-- **Next.js** — React framework for production
-- **Amiri font** — Beautiful Arabic typeface by Khaled Hosny
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📞 Contact
+## Contact
 
 For questions, feedback, or feature requests, please open an issue on the GitHub repository:
 
@@ -599,7 +582,20 @@ For questions, feedback, or feature requests, please open an issue on the GitHub
 
 ---
 
-**JazakAllah Khair for using Nur+!** May this app serve as a helpful tool in your daily worship and Quran reading. If you find any issues or have suggestions, please contribute via GitHub.
+## Acknowledgements
+
+- **AlQuran Cloud** — Quran text, translations, and metadata
+- **AlAdhan API** — Accurate worldwide prayer times
+- **BigDataCloud** — Reverse geocoding services
+- **shadcn/ui** — Beautiful, accessible UI component library
+- **Tailwind CSS** — Utility-first CSS framework
+- **Next.js** — React framework for production
+- **Amiri font** — Arabic typeface designed by Khaled Hosny
+- **Geist fonts** — Modern sans-serif and mono families from Vercel
+
+---
+
+*May this application be a benefit to the community. If you find any issues or have suggestions for improvement, please contribute.*
 
 > "Indeed, We have sent down the Reminder, and indeed, We will preserve it."  
-> — *Qur'an 15:9*
+> — Qur'an 15:9
