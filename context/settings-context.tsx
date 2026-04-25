@@ -9,10 +9,9 @@ export interface Settings {
   // Quran Settings
   quranFontSize: number
   quranTranslation: string
+  quranReciter: string
   showTranslation: boolean
-  showTransliteration: boolean
-  quranTheme: 'classic' | 'modern' | 'sepia'
-  linesPerPage: number
+  ayahNumbering: 'arabic' | 'urdu' | 'english'
   
   // Salah Settings
   calculationMethod: string
@@ -48,9 +47,9 @@ export interface Settings {
   }
   
   // General
-  language: string
   hijriAdjustment: number
   timeFormat: '12h' | '24h'
+  dateFormat: string
 }
 
 const defaultSettings: Settings = {
@@ -60,10 +59,9 @@ const defaultSettings: Settings = {
   // Quran Settings
   quranFontSize: 28,
   quranTranslation: 'en.sahih',
+  quranReciter: 'ar.alafasy',
   showTranslation: true,
-  showTransliteration: false,
-  quranTheme: 'classic',
-  linesPerPage: 16,
+  ayahNumbering: 'english',
   
   // Salah Settings
   calculationMethod: '2', // ISNA
@@ -99,9 +97,9 @@ const defaultSettings: Settings = {
   },
   
   // General
-  language: 'en',
   hijriAdjustment: 0,
   timeFormat: '12h',
+  dateFormat: 'dd_MM_yyyy',
 }
 
 interface SettingsContextType {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Bookmark, BookmarkCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useSettings } from '@/context/settings-context'
@@ -39,87 +39,150 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
   const { settings, updateSettings } = useSettings()
   const [surahSearch, setSurahSearch] = useState('')
   const [showSurahDropdown, setShowSurahDropdown] = useState(false)
+  const [isBookmarked, setIsBookmarked] = useState(false)
 
   useEffect(() => {
-    fetchAyahs()
-    const timer = setTimeout(() => {
-      window.scrollTo(0, 0)
-    }, 0)
-    return () => clearTimeout(timer)
+    const abortController = new AbortController()
+    let isMounted = true
+
+    const loadAyahs = async () => {
+      setIsLoading(true)
+      try {
+        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/ar.alafasy`, {
+          signal: abortController.signal,
+        })
+        const data = await response.json()
+
+        const translationEdition = settings.quranTranslation || 'en.sahih'
+        const transResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/${translationEdition}`, {
+          signal: abortController.signal,
+        })
+        const transData = await transResponse.json()
+
+        if (!isMounted) return
+
+        if (data.data && data.data.ayahs) {
+          const bismillah = data.data.bismillah || ''
+          setApiBismillah(bismillah)
+
+          const verses: Ayah[] = []
+          const transObj: Record<number, string> = {}
+
+          data.data.ayahs.forEach((v: any, idx: number) => {
+            let text = (v.text || '').trim()
+            const verseNum = v.numberInSurah || idx + 1
+
+            if (idx === 0 && surahNumber !== 9 && bismillah) {
+              const cleaned = text.replace(/^[\u200B-\u200D\uFEFF]+/, '')
+              if (cleaned.startsWith(bismillah)) {
+                text = cleaned.slice(bismillah.length).trim()
+              }
+            }
+
+            verses.push({
+              id: `${surahNumber}-${verseNum}`,
+              verse_number: verseNum,
+              text_arabic: text,
+            })
+          })
+
+          setAyahs(verses)
+
+          if (transData.data?.ayahs) {
+            const bismillahTrans = transData.data.bismillah || ''
+            setApiBismillahTrans(bismillahTrans)
+            transData.data.ayahs.forEach((v: any) => {
+              let trans = v.text
+              if (trans && v.numberInSurah === 1 && surahNumber !== 9 && bismillahTrans) {
+                const cleanedTrans = trans.replace(/^[\u200B-\u200D\uFEFF]+/, '')
+                const bismillahIndex = cleanedTrans.toLowerCase().indexOf(bismillahTrans.toLowerCase())
+                if (bismillahIndex !== -1) {
+                  trans = cleanedTrans.slice(bismillahIndex + bismillahTrans.length).trim()
+                }
+              }
+              if (trans) {
+                transObj[v.numberInSurah] = trans
+              }
+            })
+          }
+
+          setTranslationText(transObj)
+        }
+      } catch (err) {
+        if (!isMounted) return
+        if (abortController.signal.aborted) return
+        console.error('Failed to fetch:', err)
+        setError('Failed to load surah')
+      } finally {
+        if (isMounted) setIsLoading(false)
+      }
+    }
+
+    loadAyahs()
+
+    return () => {
+      isMounted = false
+      abortController.abort()
+    }
   }, [surahNumber])
 
   useEffect(() => {
     setShowTranslation(settings.showTranslation)
   }, [settings.showTranslation])
 
-  const fetchAyahs = async () => {
-    setIsLoading(true)
-    setError(null)
-    try {
-      const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/ar.alafasy`)
-      const data = await response.json()
-      
-      const transResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.sahih`)
-      const transData = await transResponse.json()
-      
-      if (data.data && data.data.ayahs) {
-        setApiBismillah(data.data.bismillah || '')
-        
-        const verses: Ayah[] = []
-        const transObj: Record<number, string> = {}
-        
-        data.data.ayahs.forEach((v: any, idx: number) => {
-          let text = (v.text || '').trim()
-          const verseNum = v.numberInSurah || idx + 1
-          
-          if (idx === 0 && surahNumber !== 9 && apiBismillah) {
-            // Remove any zero-width characters from the start that might precede Bismillah
-            const cleaned = text.replace(/^[\u200B-\u200D\uFEFF]+/, '')
-            if (cleaned.startsWith(apiBismillah)) {
-              text = cleaned.slice(apiBismillah.length).trim()
-            }
-          }
-          
-          verses.push({
-            id: `${surahNumber}-${verseNum}`,
-            verse_number: verseNum,
-            text_arabic: text,
-          })
-        })
-        
-        setAyahs(verses)
-        
-        if (transData.data?.ayahs) {
-          const apiBismillahTrans = transData.data?.bismillah || ''
-          setApiBismillahTrans(apiBismillahTrans)
-          transData.data.ayahs.forEach((v: any) => {
-            let trans = v.text
-            if (trans && v.numberInSurah === 1 && surahNumber !== 9 && apiBismillahTrans) {
-              // Remove any zero-width characters from start
-              const cleanedTrans = trans.replace(/^[\u200B-\u200D\uFEFF]+/, '')
-              const bismillahIndex = cleanedTrans.toLowerCase().indexOf(apiBismillahTrans.toLowerCase())
-              if (bismillahIndex !== -1) {
-                trans = cleanedTrans.slice(bismillahIndex + apiBismillahTrans.length).trim()
-              }
-            }
-            if (trans) {
-              transObj[v.numberInSurah] = trans
-            }
-          })
-        }
-        
-        setTranslationText(transObj)
-      }
-    } catch (err) {
-      console.error('Failed to fetch:', err)
-      setError('Failed to load surah')
-    } finally {
-      setIsLoading(false)
+  useEffect(() => {
+    const bookmarks = JSON.parse(localStorage.getItem('quran-bookmarks') || '[]')
+    setIsBookmarked(bookmarks.includes(surahNumber))
+  }, [surahNumber])
+
+  const toggleBookmark = () => {
+    const bookmarks = JSON.parse(localStorage.getItem('quran-bookmarks') || '[]')
+    let newBookmarks
+    if (isBookmarked) {
+      newBookmarks = bookmarks.filter((b: number) => b !== surahNumber)
+    } else {
+      newBookmarks = [...bookmarks, surahNumber]
     }
+    localStorage.setItem('quran-bookmarks', JSON.stringify(newBookmarks))
+    setIsBookmarked(!isBookmarked)
   }
 
   const handleGotoAyah = (newSurahNumber: number) => {
     router.push(`/quran?surah=${newSurahNumber}`)
+  }
+
+  const [surahAyahBookmarks, setSurahAyahBookmarks] = useState<Record<number, number[]>>({})
+
+  useEffect(() => {
+    const ayahBookmarks = JSON.parse(localStorage.getItem('quran-ayah-bookmarks') || '{}')
+    setSurahAyahBookmarks(ayahBookmarks)
+  }, [])
+
+  const toggleAyahBookmark = (ayahNum: number) => {
+    const ayahBookmarks = JSON.parse(localStorage.getItem('quran-ayah-bookmarks') || '{}')
+    const surahAyahs = ayahBookmarks[surahNumber] || []
+    let newSurahAyahs
+    if (surahAyahs.includes(ayahNum)) {
+      newSurahAyahs = surahAyahs.filter((a: number) => a !== ayahNum)
+    } else {
+      // Check if surah is bookmarked
+      const surahBookmarks = JSON.parse(localStorage.getItem('quran-bookmarks') || '[]')
+      if (surahBookmarks.includes(surahNumber)) {
+        alert('Only one of them is possible. Ayah is preferred in most cases.')
+        return
+      }
+      newSurahAyahs = [...surahAyahs, ayahNum]
+    }
+    const newAyahBookmarks = { ...ayahBookmarks, [surahNumber]: newSurahAyahs }
+    if (newSurahAyahs.length === 0) {
+      delete newAyahBookmarks[surahNumber]
+    }
+    localStorage.setItem('quran-ayah-bookmarks', JSON.stringify(newAyahBookmarks))
+    setSurahAyahBookmarks(newAyahBookmarks)
+  }
+
+  const isAyahBookmarked = (ayahNum: number) => {
+    return surahAyahBookmarks[surahNumber]?.includes(ayahNum) || false
   }
 
   const filteredSurahs = surahs.filter(s => 
@@ -131,16 +194,35 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
   return (
     <div className="min-h-screen">
       <div className="sticky top-0 bg-background/95 backdrop-blur z-10 border-b px-4 py-3">
-        <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <Button variant="ghost" size="icon" onClick={onBack}>
             <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => surahNumber > 1 && handleGotoAyah(surahNumber - 1)}
+            disabled={surahNumber <= 1}
+            title="Previous Surah"
+          >
+            <ChevronLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1 min-w-[200px]">
             <h2 className="font-semibold">{surahInfo?.englishName}</h2>
             <p className="text-sm text-muted-foreground">
-              {surahInfo?.numberOfAyahs} Ayahs
+              Surah {surahNumber} of 114 • {surahInfo?.numberOfAyahs} Ayahs
             </p>
           </div>
+          
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => surahNumber < 114 && handleGotoAyah(surahNumber + 1)}
+            disabled={surahNumber >= 114}
+            title="Next Surah"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
           
           <div className="relative">
             <Input
@@ -183,6 +265,19 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
             }}
           >
             {showTranslation ? 'Hide' : 'Show'} Translation
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={toggleBookmark}
+            title={isBookmarked ? 'Remove Bookmark' : 'Add Bookmark'}
+          >
+            {isBookmarked ? (
+              <BookmarkCheck className="h-5 w-5 text-primary" />
+            ) : (
+              <Bookmark className="h-5 w-5" />
+            )}
           </Button>
         </div>
       </div>
@@ -242,13 +337,30 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
           </div>
                 </div>
 
-                {showTranslation && translationText[ayah.verse_number] && (
+                 {showTranslation && translationText[ayah.verse_number] && (
                   <div className="mt-3 ml-11">
                     <p className="text-muted-foreground text-sm md:text-base leading-relaxed break-words">
                       {translationText[ayah.verse_number]}
                     </p>
                   </div>
                 )}
+                <button
+                  onClick={() => toggleAyahBookmark(ayah.verse_number)}
+                  className="mt-2 ml-11 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                  title={isAyahBookmarked(ayah.verse_number) ? 'Remove ayah bookmark' : 'Bookmark this ayah'}
+                >
+                  {isAyahBookmarked(ayah.verse_number) ? (
+                    <>
+                      <BookmarkCheck className="h-3.5 w-3.5" />
+                      <span>Bookmarked</span>
+                    </>
+                  ) : (
+                    <>
+                      <Bookmark className="h-3.5 w-3.5 opacity-50" />
+                      <span>Bookmark</span>
+                    </>
+                  )}
+                </button>
               </div>
             ))}
           </div>
