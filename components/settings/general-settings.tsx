@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select'
 import { useSettings } from '@/context/settings-context'
 import { useTheme } from 'next-themes'
-import { Moon, Sun, Monitor, RotateCcw, Calendar } from 'lucide-react'
+import { Moon, Sun, Monitor, RotateCcw, Palette } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -63,14 +63,14 @@ const darkModeAccentColors = [
 
 export function GeneralSettings() {
   const { settings, updateSettings, resetSettings } = useSettings()
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
-  const isDark = resolvedTheme === 'dark'
+  const isDark = theme === 'dark'
   const availableAccents = isDark ? darkModeAccentColors : accentColors
 
   if (!mounted) {
@@ -168,9 +168,7 @@ export function GeneralSettings() {
               {availableAccents.map((accent) => (
                 <button
                   key={accent.value}
-                  onClick={() => {
-                    updateSettings({ accentColor: accent.value })
-                  }}
+                  onClick={() => updateSettings({ accentColor: accent.value })}
                   className={`h-10 w-10 rounded-full ${accent.color} transition-transform hover:scale-110 ${
                     settings.accentColor === accent.value 
                       ? 'ring-2 ring-offset-2 ring-primary scale-110' 
@@ -185,7 +183,44 @@ export function GeneralSettings() {
             </p>
           </div>
         </CardContent>
-       </Card>
+      </Card>
+
+      {/* Language Settings */}
+      <Card className="overflow-hidden border-accent/20">
+        <CardHeader className="bg-gradient-to-r from-accent/10 to-transparent border-b border-accent/10">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-accent/20 flex items-center justify-center">
+              <span className="text-sm font-semibold text-accent-foreground">ع</span>
+            </div>
+            <div>
+              <CardTitle>Language</CardTitle>
+              <CardDescription>
+                Choose your preferred language for the interface
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-3">
+            <Label>Interface Language</Label>
+            <Select
+              value={settings.language}
+              onValueChange={(value) => updateSettings({ language: value })}
+            >
+              <SelectTrigger className="w-full max-w-xs">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {languages.map((lang) => (
+                  <SelectItem key={lang.value} value={lang.value}>
+                    {lang.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Time Format */}
       <Card className="overflow-hidden border-muted-foreground/10">
@@ -259,7 +294,7 @@ export function GeneralSettings() {
             </p>
           </div>
         </CardContent>
-       </Card>
+      </Card>
 
       {/* Reset Settings */}
       <Card className="border-destructive/50">
