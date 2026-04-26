@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-accent="green">
       <body className={`${geist.variable} ${geistMono.variable} ${amiri.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"

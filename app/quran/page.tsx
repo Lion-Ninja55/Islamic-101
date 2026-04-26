@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Search, Loader2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { useSettings } from '@/context/settings-context'
+import { formatAyahNumber } from '@/lib/utils'
 
 const AUZIBILLAH = "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ"
 const BISMILLAH = "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ"
@@ -113,6 +114,7 @@ function QuranPageContent() {
   const handleSurahSelect = (surahNumber: number) => {
     setSelectedSurah(surahNumber)
     setView('reader')
+    window.scrollTo(0, 0)
   }
 
   const handleBackToList = () => {
@@ -208,9 +210,9 @@ function QuranPageContent() {
                               }}
                             >
                               <div className="flex items-start gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold text-sm flex-shrink-0">
-                                  {item.ayahNumber}
-                                </div>
+                                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold text-sm flex-shrink-0">
+                                   {formatAyahNumber(item.ayahNumber, settings.ayahNumbering)}
+                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
                                     <h3 className="font-semibold truncate">{item.surahName}</h3>
@@ -218,9 +220,9 @@ function QuranPageContent() {
                                       {item.surahNameArabic}
                                     </span>
                                   </div>
-                                  <p className="text-xs text-muted-foreground">
-                                    Ayah {item.ayahNumber} · {item.surahTranslation}
-                                  </p>
+                                   <p className="text-xs text-muted-foreground">
+                                     Ayah {formatAyahNumber(item.ayahNumber, settings.ayahNumbering)} · {item.surahTranslation}
+                                   </p>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-primary flex-shrink-0 mt-0.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                               </div>

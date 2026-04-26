@@ -6,6 +6,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import type { Surah } from '@/app/quran/page'
 import { Bookmark, BookmarkCheck } from 'lucide-react'
+import { useSettings } from '@/context/settings-context'
+import { formatAyahNumber } from '@/lib/utils'
 
 interface SurahListProps {
   surahs: Surah[]
@@ -17,6 +19,7 @@ interface SurahListProps {
 
 export function SurahList({ surahs, isLoading, onSelect, showBookmarksOnly = false, searchQuery = '' }: SurahListProps) {
   const [bookmarks, setBookmarks] = useState<number[]>([])
+  const { settings } = useSettings()
 
   useEffect(() => {
     const saved = localStorage.getItem('quran-bookmarks')
@@ -86,9 +89,9 @@ export function SurahList({ surahs, isLoading, onSelect, showBookmarksOnly = fal
            onClick={() => onSelect(surah.number)}
          >
            <div className="flex items-center gap-4">
-             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold">
-               {surah.number}
-             </div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold">
+                {formatAyahNumber(surah.number, settings.ayahNumbering)}
+              </div>
              <button
                onClick={(e) => {
                  e.stopPropagation()

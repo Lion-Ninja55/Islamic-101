@@ -26,6 +26,8 @@ interface QuranReaderProps {
   onBack: () => void
 }
 
+import { formatAyahNumber } from '@/lib/utils'
+
 export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: QuranReaderProps) {
   const [ayahs, setAyahs] = useState<Ayah[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -249,7 +251,7 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
                     }}
                   >
                     <span className="font-medium">{s.englishName}</span>
-                    <span className="text-muted-foreground text-sm">{s.number}</span>
+                     <span className="text-muted-foreground text-sm">{formatAyahNumber(s.number, settings.ayahNumbering)}</span>
                   </div>
                 ))}
               </div>
@@ -320,11 +322,11 @@ export default function QuranReader({ surahNumber, surahInfo, surahs, onBack }: 
                 className="relative py-3 px-2 rounded-lg"
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-xs text-muted-foreground">
-                      {ayah.verse_number}
-                    </span>
-                  </div>
+                   <div className="flex-shrink-0">
+                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-xs text-muted-foreground">
+                       {formatAyahNumber(ayah.verse_number, settings.ayahNumbering)}
+                     </span>
+                   </div>
                   
           <div className="flex-1 text-right">
             <p 
