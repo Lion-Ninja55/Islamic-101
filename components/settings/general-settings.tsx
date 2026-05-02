@@ -286,9 +286,9 @@ export function GeneralSettings() {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={resetSettings}>
-                  Reset Settings
-                </AlertDialogAction>
+                 <AlertDialogAction onClick={() => { setTheme('light'); resetSettings(); }}>
+                   Reset Settings
+                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
