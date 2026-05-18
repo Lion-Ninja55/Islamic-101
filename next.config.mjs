@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
+
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -8,6 +10,6 @@ const nextConfig = {
   },
 
   allowedDevOrigins: ['pedometer-citrus-deranged.ngrok-free.dev'],
-}
+};
 
-export default nextConfig
+export default nextConfig;

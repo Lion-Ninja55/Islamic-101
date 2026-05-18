@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Settings, MapPin, RefreshCw, Clock, Calendar } from 'lucide-react'
 import { useSettings } from '@/context/settings-context'
+import { usePrayerNotifications } from '@/hooks/usePrayerNotifications'
 import { useState, useEffect } from 'react'
 
 interface PrayerTimesData {
@@ -45,6 +46,9 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string; remaining: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
+  
+  // Prayer notifications
+  usePrayerNotifications(prayerTimes)
 
    useEffect(() => {
      if (settings.location.latitude && settings.location.longitude) {
